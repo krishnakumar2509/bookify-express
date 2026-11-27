@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>Add Book</h1>
+    <form id="addForm">
+        <label>ISBN <input type="text" name="isbn" required></label><br>
+        <label>Author Name <input type="text" name="authorName" required></label><br>
+        <label>Book Name <input type="text" name="bookName" required></label><br>
+        <label>Pages <input type="number" name="pages" required></label><br>
+        <label>Price <input type="number" name="price" required></label><br>
+        <button type="submit">Add</button>
+        <a href="/books">Cancel</a>
+    </form>
+
+    <script>
+        document.getElementById("addForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch("/books", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                window.location.href = "/books";
+            } else {
+                alert("Failed to add book");
+            }
+        });
+    </script>
+</body>
+</html>

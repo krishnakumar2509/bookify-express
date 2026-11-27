@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+</head>
+<body>
+    <h1>Books</h1>
+
+    <a href="/books/new"><button>+ Add Book</button></a>
+
+    <% if (books.length === 0) { %>
+        <p>No Books Available</p>
+    <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>S. No.</th>
+                    <th>ISBN</th>
+                    <th>Author Name</th>
+                    <th>Book Name</th>
+                    <th>Pages</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% books.forEach((book, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= book.isbn %></td>
+                        <td><%= book.authorName %></td>
+                        <td><a href="/books/<%= book.id %>"><%= book.bookName %></a></td>
+                        <td><%= book.pages %></td>
+                        <td><%= book.price %></td>
+                        <td>
+                            <button onclick="window.location.href='/books/edit/<%= book.id %>'">Edit</button>
+                            <button onclick="deleteBookById('<%= book.id %>')">Delete</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+
+    <script>
+        async function deleteBookById(id) {
+            if (!confirm("Delete this book?")) return;
+
+            const res = await fetch(`/books/${id}`, { method: "DELETE" });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert("Failed to delete book");
+            }
+        }
+    </script>
+</body>
+</html>

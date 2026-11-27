@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit Books</h1>
+    <form id="editForm">
+        <label for="">ISBN <input type="text" name="isbn" value="<%= book.isbn %>"></label><br>
+        <label for="">Author Name <input type="text" name="authorName" value="<%= book.authorName %>"></label><br>
+        <label for="">Book Name <input type="text" name="bookName" value="<%= book.bookName %>"></label><br>
+        <label for="">Pages <input type="number" name="pages" value="<%= book.pages %>"></label><br>
+        <label for="">Price <input type="number" name="price" value="<%= book.price %>"></label><br>
+        <button type="submit">save</button>
+        <a href="/books">cancel</a>
+    </form>
+</body>
+<script>
+    document.getElementById("editForm").addEventListener("submit",async (e)=>{
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target))
+        const res = await fetch("/books/<%= book.id %>",{
+            method:"PUT",
+            headers:{
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        if(res.ok){
+            window.location.href = "/books";
+        }
+        else{
+            alert("Update failed")
+        }
+        
+    })
+</script>
+</html>
